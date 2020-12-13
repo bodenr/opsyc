@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<head>
+    <title>{{ .Hostname }}</title>
+</head>
+
+<body>
+    <h1>{{ .Hostname }} @ {{ .Timestamp }}</h1>
+    </br>
+    <h2>Runtime</h2>
+    <ul>
+        <li>Golang binary version: {{ .GoVersion }}</li>
+        <li>OS: {{ .OperatingSystem }}</li>
+        <li>Architecture: {{ .Arch }}</li>
+        <li>Time zone: {{ .TimeZone }}</li>
+    </ul>
+    </br>
+    <h2>Virtual Memory</h2>
+    <ul>
+        <li>Total: {{ .VirtualMemory.Total }}</li>
+        <li>Available: {{ .VirtualMemory.Available }}</li>
+        <li>Used: {{ .VirtualMemory.Used }}</li>
+        <li>UsedPercent: {{ printf "%.2f" .VirtualMemory.UsedPercent }}%</li>
+        <li>Free: {{ .VirtualMemory.Free }}</li>
+    </ul>
+
+    </br>
+    <h2>CPU Usage Per Core</h2>
+    <ul>
+        {{ range $index, $element := .ProcessorPercent }}
+        <li>CPU{{ $index }}: {{ printf "%.2f" $element }}%</li>
+        {{ end }}
+    </ul>
+    </br>
+    <h2>Network Interfaces</h2>
+    {{ range $index, $iface := .Interfaces }}
+    <h4>{{ $iface.Name }}</h4>
+    <ul>
+        <li>Index: {{ $iface.Index }}</li>
+        <li>MTU: {{ $iface.MTU }}</li>
+        <li>HardwareAddr: {{ $iface.HardwareAddr }}</li>
+        <li>Flags:
+            <ul>
+                {{ range $i, $flag := $iface.Flags }}
+                <li>{{ $flag }}</li>
+                {{ end }}
+            </ul>
+        </li>
+        <li>Addrs:
+            <ul>
+                {{ range $i, $addr := $iface.Addrs }}
+                <li>{{ $addr.Addr }}</li>
+                {{ end }}
+            </ul>
+        </li>
+    </ul>
+    {{ end }}
+</body>
+
+</html>
